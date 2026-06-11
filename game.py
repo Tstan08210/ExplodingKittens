@@ -175,7 +175,7 @@ class Game:
             player.add_card(
                 defuses.pop()
             )
-            for _ in range(7):
+            for _ in range(4):
                 player.add_card(
                     self.deck.pop()
                 )
