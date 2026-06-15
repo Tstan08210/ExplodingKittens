@@ -198,7 +198,7 @@ async def start_game(game, context):
         [InlineKeyboardButton("Play card", switch_inline_query_current_chat=f"play_{chat_id}")]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    await context.bot.send_message(game.chat_id, "Game has started!!\nFirst player: " + str(game.current_player), reply_markup=reply_markup)
+    await context.bot.send_message(game.chat_id, f"Game has started\!\!\nFirst player: [{str(game.current_player)}](tg://user?id={game.current_player.user_id})", reply_markup=reply_markup, parse_mode="MarkdownV2")
 
 async def inline_handler(update, context):
     query = update.inline_query.query
@@ -344,7 +344,7 @@ async def card_handler(update, context):
                 next_turnable = False
                 if len(game.players) == 1:
                     time.sleep(1)
-                    await update.message.reply_text(f"🏆 {game.players[0]} survives the chaos and wins!")
+                    await update.message.reply_text(f"🏆 [{game.players[0]}](tg://user?id={game.players[0].user_id}) survives the chaos and wins\!", parse_mode="MarkdownV2")
                     del games[chat_id]
                     return
             else:
@@ -399,7 +399,7 @@ async def card_handler(update, context):
                 return
             game.discard.append(futurecard)
             player.remove_card(futurecard)
-            top_cards = game.deck[-3:]
+            top_cards = list(reversed(game.deck[-3:]))
             if top_cards:
                 await update.message.reply_text("I have sent you the top 3 cards of the deck in DM")
                 await context.bot.send_message(chat_id=player.user_id, text="You played a See The Future card! The top cards of the deck are:")
@@ -440,7 +440,7 @@ async def card_handler(update, context):
         [InlineKeyboardButton("Play card", switch_inline_query_current_chat=f"play_{chat_id}")]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    await update.message.reply_text(f"Next player: {game.current_player}, it's your turn!", reply_markup=reply_markup)
+    await update.message.reply_text(f"Next player: [{game.current_player}](tg://user?id={game.current_player.user_id}), it's your turn\!", reply_markup=reply_markup, parse_mode="MarkdownV2")
 
 async def next_turn(context):
     job = context.job
@@ -494,7 +494,7 @@ async def next_turn(context):
         [InlineKeyboardButton("Play card", switch_inline_query_current_chat=f"play_{chat_id}")]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    await context.bot.send_message(chat_id, f"Next player: {game.current_player}, it's your turn!", reply_markup=reply_markup)
+    await context.bot.send_message(chat_id, f"Next player: [{game.current_player}](tg://user?id={game.current_player.user_id}), it's your turn\!", reply_markup=reply_markup, parse_mode = "MarkdownV2")
 
 async def attack_handler(update, context):
     text = update.message.text

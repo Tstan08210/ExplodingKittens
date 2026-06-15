@@ -8,6 +8,8 @@ from threading import Thread
 from dotenv import load_dotenv
 import os
 from handlers import *
+import warnings
+warnings.filterwarnings("ignore", category=SyntaxWarning)
 
 try:
     load_dotenv()
